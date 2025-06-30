@@ -1,0 +1,18 @@
+name: ブランチ制限
+
+on: 
+    pull_request:
+        branches:
+            - main
+
+jobs:
+    check_base_branch:
+        runs-on: ubuntu-latest
+        steps:
+            - name: developブランチ以外のプルリクエストを制限
+              run: |
+                if [ "${{ github.event.pull_request.base.ref }}" != "develop" ]; then
+                    echo "mainブランチへのPRはdevelopブランチからのみ受け付けています。"
+                    echo "PRのベースブランチをdevelopに変更してください。"
+                    exit 1
+                fi
